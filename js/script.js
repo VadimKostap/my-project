@@ -1,44 +1,84 @@
 /* Задание на урок:
 
-1) Создать переменную numberOfFilms и в неё поместить ответ от пользователя на вопрос:
-'Сколько фильмов вы уже посмотрели?'
+1) Первую часть задания повторить по уроку
 
-2) Создать объект personalMovieDB и в него поместить такие свойства:
-    - count - сюда передается ответ на первый вопрос
-    - movies - в это свойство поместить пустой объект
-    - actors - тоже поместить пустой объект
-    - genres - сюда поместить пустой массив
-    - privat - в это свойство поместить boolean(логическое) значение false
+2) Создать функцию showMyDB, которая будет проверять свойство privat. Если стоит в позиции
+false - выводит в консоль главный объект программы
 
-3) Задайте пользователю по два раза вопросы:
-    - 'Один из последних просмотренных фильмов?'
-    - 'На сколько оцените его?'
-Ответы стоит поместить в отдельные переменные
-Записать ответы в объект movies в формате: 
-    movies: {
-        'logan': '8.1'
-    }
+3) Создать функцию writeYourGenres в которой пользователь будет 3 раза отвечать на вопрос 
+"Ваш любимый жанр под номером ${номер по порядку}". Каждый ответ записывается в массив данных
+genres
 
-Проверить, чтобы все работало без ошибок в консоли */
+P.S. Функции вызывать не обязательно*/
 
 'use strict';
 
-const numberOfFilms = +prompt('How many movies have you watched?', '');
+let numberOfFilms;
 
-const personalMovieDB = {
+function start() {
+    numberOfFilms = +prompt('how many movies have you watched?', '');
+
+    while (numberOfFilms == '' || numberOfFilms == null || isNaN(numberOfFilms)) {
+        numberOfFilms = +prompt('how many movies have you watched?', '');     
+    }
+}
+
+start();
+
+const personalMoviesDB = {
     count: numberOfFilms,
     movies: {},
     actors: {},
     genres: [],
-    privat : false
+    privat: false
 };
 
-const a = prompt('One of last movies you watched?', ''),
-      b = prompt('How would you rate it?', ''),
-      c = prompt('One of last movies you watched?', ''),
-      d = prompt('How would you rate it?', '');
 
-personalMovieDB.movies[a] = b;
-personalMovieDB.movies[c] = d;
+function rememberMyFilms() {
+    for (let i = 0; i < 2; i++) {
+        const a = prompt('one of last movies?', ''),
+              b = prompt('how would you rate it?', '');
+    
+        if (a != null && b != null && a != '' && b != '' && a.length < 50) {
+            personalMoviesDB.movies[a] = b;
+            console.log('done');    
+        }  else {
+            console.log('error');
+            i--;
+        }    
+    }
+    
+}
 
-console.log(personalMovieDB);
+//rememberMyFilms();
+
+
+function detectPersonalLevel() {
+    if (personalMoviesDB.count < 10) {
+        console.log('too few movies');
+    } else if (personalMoviesDB.count >= 10 && personalMoviesDB.count <30) {
+        console.log('you are classic viewer');
+    } else if (personalMoviesDB.count >=30) {
+        console.log('you are kinoman');
+    } else {
+        console.log('error occured');
+    }
+}
+
+//detectPersonalLevel();
+
+function showMyDB (hidden) {
+    if (!hidden) {
+        console.log(personalMoviesDB);
+    }
+}
+
+showMyDB(personalMoviesDB.privat);
+
+function writeYourGenres() {
+    for (let i = 1; i <= 3; i++) {
+        personalMoviesDB.genres[i - 1] = prompt(`Your favoutite genre under the number ${i}`);
+    }
+}
+
+writeYourGenres();
